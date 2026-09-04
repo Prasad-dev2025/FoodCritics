@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
 
 import {
@@ -159,6 +159,11 @@ export default function App() {
   const [isLocating, setIsLocating] =
     useState(false);
 
+  // Tracks whether the customer has already interacted with
+  // address/GPS/map selection. This prevents the name field
+  // from resetting a location chosen before the name.
+  const hasActiveLocationSelection = useRef(false);
+
 
   // ==================================================
   // DEFAULT MAP POSITION
@@ -229,13 +234,12 @@ export default function App() {
     if (!userName.trim()) {
 
       setSavedAddresses([]);
-      setAddressMode('new');
-      setSelectedAddress('');
-      setAddress('');
-      setLandmark('');
-      setDeliveryCoordinates(null);
-      setMapPosition(null);
 
+      // IMPORTANT:
+      // Do not clear address/location fields here.
+      // This effect runs whenever the name changes, so clearing
+      // them would destroy a GPS/exact-map selection made before
+      // the customer entered their name.
       return;
     }
 
@@ -259,6 +263,13 @@ export default function App() {
       setSavedAddresses(
         customerAddresses
       );
+
+      // If the customer already entered an address, selected GPS,
+      // or picked an exact map location before entering their name,
+      // preserve that work. Only refresh the saved-address list.
+      if (hasActiveLocationSelection.current) {
+        return;
+      }
 
       if (customerAddresses.length > 0) {
 
@@ -608,6 +619,8 @@ export default function App() {
   // ==================================================
 
   const handleUseMyLocation = () => {
+
+    hasActiveLocationSelection.current = true;
 
     if (isLocating) {
       return;
@@ -984,6 +997,8 @@ export default function App() {
   const handleUseCurrentLocation =
     () => {
 
+      hasActiveLocationSelection.current = true;
+
       if (isLocating) {
         return;
       }
@@ -1074,6 +1089,8 @@ export default function App() {
   const handleMapLocationSelect =
     (coordinates) => {
 
+      hasActiveLocationSelection.current = true;
+
       setMapPosition(
         coordinates
       );
@@ -1100,6 +1117,8 @@ export default function App() {
         return;
       }
 
+      hasActiveLocationSelection.current = true;
+
       setDeliveryCoordinates(
         mapPosition
       );
@@ -1118,6 +1137,8 @@ export default function App() {
 
   const handleManualAddressChange =
     (value) => {
+
+      hasActiveLocationSelection.current = true;
 
       setAddress(value);
 
@@ -1159,17 +1180,24 @@ export default function App() {
   const handleManualLandmarkChange =
     (value) => {
 
+      hasActiveLocationSelection.current = true;
+
       setLandmark(value);
 
       /*
-       * Landmark is part of the location search.
-       * Clear previous coordinates so the next map
-       * search uses the current address + landmark.
+       * If a manual address exists, changing the landmark
+       * invalidates the previous geocoded pin because the
+       * landmark is part of the address search.
+       *
+       * If there is NO manual address, the customer may be
+       * using GPS / exact map location. In that case, changing
+       * the landmark must NOT erase the selected coordinates.
        */
 
-      setDeliveryCoordinates(null);
-
-      setMapPosition(null);
+      if (address.trim()) {
+        setDeliveryCoordinates(null);
+        setMapPosition(null);
+      }
 
       if (value.trim()) {
 
@@ -1190,6 +1218,8 @@ export default function App() {
 
   const handleSelectOldAddress =
     (oldAddress) => {
+
+      hasActiveLocationSelection.current = true;
 
       setAddressMode('old');
 
@@ -1372,6 +1402,8 @@ export default function App() {
 
   const handleUseNewAddress =
     () => {
+
+      hasActiveLocationSelection.current = false;
 
       setAddressMode('new');
 
@@ -1569,12 +1601,15 @@ export default function App() {
       }
 
 
-      // ADDRESS VALIDATION
+      // LOCATION VALIDATION
+      // A typed address OR a confirmed GPS/map coordinate is enough.
+      // Address is not required when exact location has been selected.
 
-      if (!address.trim()) {
+      if (!address.trim() && !deliveryCoordinates) {
 
         alert(
-          '⚠️ Please enter your complete delivery address.'
+          '⚠️ Please enter your complete delivery address\n' +
+          'or select your exact location using GPS/map.'
         );
 
         return;
@@ -1601,6 +1636,10 @@ export default function App() {
 
       const googleMapsUrl =
         createGoogleMapsUrl();
+
+      const deliveryAddressText = address.trim()
+        ? address.trim()
+        : 'Address not manually entered — exact GPS/map location provided';
 
 
       // ORDER ITEMS
@@ -1650,7 +1689,7 @@ export default function App() {
         `Name: ${userName.trim()}\n\n` +
 
         `*DELIVERY ADDRESS*\n` +
-        `${address.trim()}\n\n` +
+        `${deliveryAddressText}\n\n` +
 
         `*NEARBY LANDMARK*\n` +
         `${landmark.trim()}\n\n` +
