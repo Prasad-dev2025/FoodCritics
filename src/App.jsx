@@ -1711,7 +1711,7 @@ export default function App() {
 
       <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#080808]/80 backdrop-blur-xl">
 
-        <div className="mx-auto flex h-16 w-[calc(100%-28px)] max-w-6xl items-center justify-between sm:h-[72px] sm:w-[calc(100%-40px)]">
+        <div className="mx-auto flex h-20 w-[calc(100%-28px)] max-w-6xl items-center justify-between sm:h-[72px] sm:w-[calc(100%-40px)]">
 
           <motion.button
             type="button"
@@ -1728,7 +1728,7 @@ export default function App() {
             className="group text-left leading-none outline-none"
           >
 
-            <div className="text-sm font-black tracking-[0.08em] sm:text-lg">
+            <div className="text-base font-black tracking-[0.08em] sm:text-lg">
 
               THE{' '}
 
@@ -1740,7 +1740,7 @@ export default function App() {
 
             </div>
 
-            <div className="mt-1 flex items-center gap-1 text-[7px] font-bold tracking-[0.35em] text-zinc-500 transition group-hover:text-amber-400 sm:text-[9px]">
+            <div className="mt-1 flex items-center gap-1 text-[8px] font-bold tracking-[0.35em] text-zinc-500 transition group-hover:text-amber-400 sm:text-[9px]">
 
               FOOD CRITIC
 
@@ -1765,11 +1765,11 @@ export default function App() {
             onClick={() =>
               setIsCartOpen(true)
             }
-            className="relative flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-300 to-orange-500 px-3 py-2.5 text-xs font-extrabold text-black shadow-lg shadow-orange-500/10 sm:px-5 sm:py-3 sm:text-sm"
+            className="relative flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-300 to-orange-500 px-4 py-3 text-sm font-extrabold text-black shadow-lg shadow-orange-500/10 sm:px-5 sm:py-3 sm:text-sm"
           >
 
             <ShoppingCart
-              size={17}
+              size={19}
             />
 
             <span className="hidden sm:inline">
