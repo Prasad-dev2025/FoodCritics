@@ -170,8 +170,8 @@ export default function App() {
   // ==================================================
 
   const DEFAULT_LOCATION = {
-    latitude: 17.688806,
-    longitude: 83.268494,
+    latitude: 17.6818168,
+    longitude: 83.2618589,
   };
 
 
@@ -389,10 +389,10 @@ export default function App() {
           (cartItem) =>
             cartItem.id === item.id
               ? {
-                  ...cartItem,
-                  qty:
-                    cartItem.qty + 1,
-                }
+                ...cartItem,
+                qty:
+                  cartItem.qty + 1,
+              }
               : cartItem
         );
       }
@@ -429,10 +429,10 @@ export default function App() {
         .map((item) =>
           item.id === id
             ? {
-                ...item,
-                qty:
-                  item.qty + delta,
-              }
+              ...item,
+              qty:
+                item.qty + delta,
+            }
             : item
         )
         .filter(
@@ -486,10 +486,10 @@ export default function App() {
     activeCategory === 'all'
       ? MENU_ITEMS
       : MENU_ITEMS.filter(
-          (item) =>
-            item.category ===
-            activeCategory
-        );
+        (item) =>
+          item.category ===
+          activeCategory
+      );
 
 
   const categories = [
@@ -1496,7 +1496,7 @@ export default function App() {
 
         const existingAddresses =
           storedAddresses[
-            customerKey
+          customerKey
           ] || [];
 
         const cleanAddress =
@@ -2060,11 +2060,10 @@ export default function App() {
                         category.id
                       )
                     }
-                    className={`flex shrink-0 items-center gap-2 rounded-xl border px-3.5 py-2.5 text-xs font-bold transition-all sm:px-4 ${
-                      isActive
+                    className={`flex shrink-0 items-center gap-2 rounded-xl border px-3.5 py-2.5 text-xs font-bold transition-all sm:px-4 ${isActive
                         ? 'border-transparent bg-gradient-to-r from-amber-300 to-orange-500 text-black shadow-lg shadow-orange-500/10'
                         : 'border-zinc-800 bg-zinc-900/70 text-zinc-400 hover:border-zinc-700 hover:text-white'
-                    }`}
+                      }`}
                   >
 
                     <Icon
@@ -2483,12 +2482,11 @@ export default function App() {
                               }
 
                             }}
-                            className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-bold ${
-                              addressMode ===
-                              'old'
+                            className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-bold ${addressMode ===
+                                'old'
                                 ? 'border-amber-500 bg-amber-500/10 text-amber-400'
                                 : 'border-zinc-800 bg-zinc-900 text-zinc-400'
-                            }`}
+                              }`}
                           >
 
                             <Home
@@ -2507,12 +2505,11 @@ export default function App() {
                             onClick={
                               handleUseNewAddress
                             }
-                            className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-bold ${
-                              addressMode ===
-                              'new'
+                            className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-bold ${addressMode ===
+                                'new'
                                 ? 'border-amber-500 bg-amber-500/10 text-amber-400'
                                 : 'border-zinc-800 bg-zinc-900 text-zinc-400'
-                            }`}
+                              }`}
                           >
 
                             <Navigation
@@ -2554,19 +2551,19 @@ export default function App() {
                               const savedLandmark =
                                 typeof savedAddress ===
                                   'object' &&
-                                savedAddress !== null
+                                  savedAddress !== null
                                   ? savedAddress.landmark || ''
                                   : '';
 
                               const hasGPS =
                                 typeof savedAddress ===
-                                  'object' &&
+                                'object' &&
                                 savedAddress !==
-                                  null &&
+                                null &&
                                 typeof savedAddress.latitude ===
-                                  'number' &&
+                                'number' &&
                                 typeof savedAddress.longitude ===
-                                  'number';
+                                'number';
 
                               const isSelected =
                                 selectedAddress ===
@@ -2578,11 +2575,10 @@ export default function App() {
                                   key={
                                     index
                                   }
-                                  className={`flex items-stretch gap-2 rounded-xl border p-2 transition ${
-                                    isSelected
+                                  className={`flex items-stretch gap-2 rounded-xl border p-2 transition ${isSelected
                                       ? 'border-amber-500 bg-amber-500/10'
                                       : 'border-zinc-800 bg-zinc-900'
-                                  }`}
+                                    }`}
                                 >
 
                                   <button
@@ -2607,11 +2603,10 @@ export default function App() {
                                       <div className="min-w-0">
 
                                         <span
-                                          className={`block text-xs leading-5 ${
-                                            isSelected
+                                          className={`block text-xs leading-5 ${isSelected
                                               ? 'text-white'
                                               : 'text-zinc-400'
-                                          }`}
+                                            }`}
                                         >
 
                                           {
@@ -2873,11 +2868,10 @@ export default function App() {
                               disabled={
                                 isLocating
                               }
-                              className={`flex shrink-0 items-center gap-1 text-[9px] font-bold transition ${
-                                isLocating
+                              className={`flex shrink-0 items-center gap-1 text-[9px] font-bold transition ${isLocating
                                   ? 'cursor-not-allowed text-zinc-600'
                                   : 'text-amber-400 hover:text-amber-300'
-                              }`}
+                                }`}
                             >
 
                               {isLocating ? (
@@ -3006,11 +3000,10 @@ export default function App() {
                           {locationStatus && (
 
                             <div
-                              className={`mt-2 flex items-start gap-1.5 text-[9px] ${
-                                deliveryCoordinates
+                              className={`mt-2 flex items-start gap-1.5 text-[9px] ${deliveryCoordinates
                                   ? 'text-green-400'
                                   : 'text-zinc-500'
-                              }`}
+                                }`}
                             >
 
                               {deliveryCoordinates ? (
@@ -3138,11 +3131,10 @@ export default function App() {
                               )
                             }
                             placeholder="Near Hanuman Temple, Beside ABC School..."
-                            className={`w-full rounded-xl border bg-zinc-900 px-3 py-3 text-xs text-white outline-none transition placeholder:text-zinc-600 ${
-                              landmark.trim()
+                            className={`w-full rounded-xl border bg-zinc-900 px-3 py-3 text-xs text-white outline-none transition placeholder:text-zinc-600 ${landmark.trim()
                                 ? 'border-zinc-800 focus:border-amber-500'
                                 : 'border-red-500/40 focus:border-red-400'
-                            }`}
+                              }`}
                           />
 
 
@@ -3741,11 +3733,10 @@ export default function App() {
                   disabled={
                     isLocating
                   }
-                  className={`absolute bottom-4 right-4 z-[500] flex items-center gap-2 rounded-xl border px-3 py-2.5 text-[9px] font-bold shadow-xl backdrop-blur-md transition ${
-                    isLocating
+                  className={`absolute bottom-4 right-4 z-[500] flex items-center gap-2 rounded-xl border px-3 py-2.5 text-[9px] font-bold shadow-xl backdrop-blur-md transition ${isLocating
                       ? 'cursor-not-allowed border-zinc-700 bg-[#101010]/95 text-zinc-500'
                       : 'border-zinc-700 bg-[#101010]/95 text-white hover:border-amber-500 hover:text-amber-400'
-                  }`}
+                    }`}
                 >
 
                   {isLocating ? (
