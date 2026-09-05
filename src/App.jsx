@@ -170,8 +170,8 @@ export default function App() {
   // ==================================================
 
   const DEFAULT_LOCATION = {
-    latitude: 17.7115,
-    longitude: 83.3015,
+    latitude: 17.688806,
+    longitude: 83.268494,
   };
 
 
@@ -938,9 +938,46 @@ export default function App() {
             coordinates
           );
 
-          setLocationStatus(
-            'GPS location found. Move the pin to your exact delivery location.'
-          );
+          const accuracy =
+            position.coords.accuracy;
+
+          /*
+           * IMPORTANT:
+           *
+           * getCurrentPosition can "succeed" while still
+           * being wildly inaccurate — especially on
+           * desktops/laptops with no GPS chip, where the
+           * browser falls back to WiFi/IP-based positioning
+           * that can be off by kilometers. A poor accuracy
+           * value (large radius, in meters) is the signal
+           * that this happened, so warn instead of silently
+           * dropping a misleading pin.
+           */
+
+          if (
+            typeof accuracy === 'number' &&
+            accuracy > 300
+          ) {
+
+            setLocationStatus(
+              `⚠️ GPS location found, but accuracy is low (±${Math.round(accuracy)}m). Please drag the pin to your exact spot.`
+            );
+
+            alert(
+              '⚠️ Your device location was found, but it may ' +
+              `be inaccurate (±${Math.round(accuracy)} meters).\n\n` +
+              'This is common on laptops/desktops without GPS.\n\n' +
+              'Please drag the pin to your exact delivery ' +
+              'location, or close this and type your address ' +
+              'instead.'
+            );
+
+          } else {
+
+            setLocationStatus(
+              'GPS location found. Move the pin to your exact delivery location.'
+            );
+          }
 
           setIsLocating(false);
         },
@@ -960,6 +997,13 @@ export default function App() {
 
           setLocationStatus(
             'Could not get GPS. Move the pin manually to your delivery location.'
+          );
+
+          alert(
+            '⚠️ We could not get your device location.\n\n' +
+            'Showing a placeholder location — please drag ' +
+            'the pin on the map to your exact delivery spot, ' +
+            'or close this and type your address instead.'
           );
         },
 
