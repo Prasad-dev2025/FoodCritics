@@ -23,6 +23,49 @@
     The Silent Food Critic | Premium Fast Food
   </title>
 
+  <script>
+    (function () {
+      var RELOAD_FLAG = 'sfc_chunk_reload_done';
+
+      function isChunkLoadFailure(message) {
+        if (!message) return false;
+        return (
+          message.includes('Failed to fetch dynamically imported module') ||
+          message.includes('error loading dynamically imported module') ||
+          message.includes('Importing a module script failed') ||
+          message.includes('ChunkLoadError') ||
+          message.includes('Loading chunk')
+        );
+      }
+
+      function reloadOnce() {
+        // Guard against an infinite reload loop if the
+        // problem isn't actually a stale-chunk issue.
+        if (sessionStorage.getItem(RELOAD_FLAG)) {
+          return;
+        }
+        sessionStorage.setItem(RELOAD_FLAG, '1');
+        window.location.reload();
+      }
+
+      window.addEventListener('error', function (e) {
+        if (isChunkLoadFailure(e.message)) {
+          reloadOnce();
+        }
+      }, true);
+
+      // Vite's dynamic import() failures usually surface as
+      // an unhandled promise rejection, not a plain 'error'
+      // event.
+      window.addEventListener('unhandledrejection', function (e) {
+        var message = e.reason && e.reason.message ? e.reason.message : String(e.reason || '');
+        if (isChunkLoadFailure(message)) {
+          reloadOnce();
+        }
+      });
+    })();
+  </script>
+
   <!-- Legacy Desktop Browsers -->
   <link rel="icon" href="/favicon.ico" sizes="any" />
   
